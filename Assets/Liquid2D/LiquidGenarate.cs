@@ -15,15 +15,16 @@ public class LiquidGenarate : MonoBehaviour {
     [SerializeField] float density = 1;
     [SerializeField] float scale = 1;
 
-    [SerializeField] KeyCode key;
+   // [SerializeField] KeyCode key;
     [SerializeField] LiquidParticle.LiquidType liquidType;
     // Use this for initialization
     void Update () {
 
+        /*
         if (Input.GetKeyDown(key))
         {
             generate = true;
-        }
+        }*/
         if (generate)
         {
             generate = false;
