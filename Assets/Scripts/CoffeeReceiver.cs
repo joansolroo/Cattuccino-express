@@ -17,6 +17,10 @@ public class CoffeeReceiver : MonoBehaviour
 
     public static int TOTALSCORE = 0;
     public static int HP = 5;
+
+    public static int lastScore = -1;
+
+    
     private void Start()
     {
         info.HideImmediately();
@@ -43,9 +47,6 @@ public class CoffeeReceiver : MonoBehaviour
             {
                 total += a;
             }
-
-
-
             /* 
              text.text = "";
              for (int idx = 0; idx < ingredients.Length; ++idx)
@@ -54,6 +55,7 @@ public class CoffeeReceiver : MonoBehaviour
              }*/
 
             int score = glass.recipe.ScoredRecipe(ingredients,amounts);
+            lastScore = score;
             if (score>2)
             {
                 soundAccept.Play();
@@ -86,6 +88,7 @@ public class CoffeeReceiver : MonoBehaviour
             info.Show();
         }
     }
+
     IEnumerator DestroyDrink(GameObject drink, float waitTime, float fadeTime)
     {
         yield return new WaitForSeconds(waitTime);

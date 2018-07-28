@@ -23,22 +23,27 @@ public class AudioBend : MonoBehaviour {
     void Start () {
         source = GetComponent<AudioSource>();
         unbendPitch = source.pitch;
+        currentPitch = source.pitch;
     }
 
     bool paused = false;
+    public bool applyPitch = false;
 	// Update is called once per frame
 	void Update () {
         unbendPitch = Mathf.MoveTowards(unbendPitch, targetPitch, Time.unscaledDeltaTime * speed * Mathf.Abs(unbendPitch - targetPitch));
         currentPitch = Mathf.MoveTowards(currentPitch, unbendPitch, 1);
         currentPitch += Random.Range(-noise, noise)*Time.unscaledDeltaTime;
-        source.pitch = currentPitch;
+        currentPitch = Mathf.Min(1.5f, Mathf.Max(0.2f, currentPitch));
+
+        if(applyPitch)
+            source.pitch = currentPitch;
         if (paused)
         {
-            Time.timeScale = currentPitch/4;
+           // Time.timeScale = currentPitch/4;
         }
         else
         {
-            Time.timeScale = currentPitch;
+           // Time.timeScale = currentPitch;
         }
 	}
 

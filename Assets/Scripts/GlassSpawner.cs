@@ -24,18 +24,22 @@ public class GlassSpawner : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text text;
 
     AudioSource audiosource;
+
+    [SerializeField] GameObject end;
+
     int time;
     // Use this for initialization
     void Start()
     {
         audiosource = GetComponent<AudioSource>();
-        time = timeBetweenDrinks[level]-2;
+        time = timeBetweenDrinks[level];
         //AudioBend.GoToPitch(drinkSpawningSpeed[level],1000);
     }
 
     [SerializeField] int drinksServed = 0;
     [SerializeField] int level = 0;
-    
+
+    bool ended = false;
     // Update is called once per frame
     void Update()
     {
@@ -77,9 +81,25 @@ public class GlassSpawner : MonoBehaviour
                 {
                     Debug.Log("WIN!");
                     AudioBend.GoToPitch(0);
+
+                    if (!ended)
+                    {
+                        ended = true;
+                        end.SetActive(true);
+                        Playlist.instance.End();
+                        Time.timeScale = 0;
+                    }
                 }
             }
 
+            if (CoffeeReceiver.HP == 0 && !ended)
+            {
+
+                ended = true;
+                end.SetActive(true);
+                Time.timeScale = 0;
+                Playlist.instance.End();
+            }
             if (level < levels.Length)
             {
                 text.text = "HP: "; for (int hp = 0; hp < 5; ++hp) { text.text += CoffeeReceiver.HP > hp ? "I" : "-"; }
@@ -91,7 +111,13 @@ public class GlassSpawner : MonoBehaviour
                 text.text = " WINNER! | " + CoffeeReceiver.TOTALSCORE.ToString("0000") + " pts";
             }
         }
+        if (ended)
+        {
+
+           
+        }
     }
+
 
    // float timeCounter = 0;
     [SerializeField] float audioDelay = 1;

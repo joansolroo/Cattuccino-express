@@ -17,6 +17,11 @@ public class LiquidGenarate : MonoBehaviour {
 
    // [SerializeField] KeyCode key;
     [SerializeField] LiquidParticle.LiquidType liquidType;
+    public static  Dictionary<LiquidParticle.LiquidType, Color> liquidColor = new Dictionary<LiquidParticle.LiquidType, Color>();
+    private void Start()
+    {
+        liquidColor[liquidType] = color;
+    }
     // Use this for initialization
     void Update () {
 

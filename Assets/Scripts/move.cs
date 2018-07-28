@@ -21,9 +21,12 @@ public class move : MonoBehaviour {
 
         if (t > 0.25f)
         {
-            rb2d.velocity = new Vector2(speed * (autoMove ? 1 : Input.GetAxis("Horizontal")), 0);
+            if (!RecipeHelper.isTutorial)
+            {
+                rb2d.velocity = new Vector2(speed * (autoMove ? 1 : Input.GetAxis("Horizontal")), 0) * AudioBend.instance.currentPitch;
+            }
         }
         else{ t += Time.deltaTime; }
-        rb2d.gravityScale= gravityScale*AudioBend.instance.currentPitch;
+        rb2d.gravityScale= gravityScale;
     }
 }

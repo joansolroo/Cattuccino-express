@@ -34,7 +34,8 @@ public class RecipeHelper : MonoBehaviour {
         } 
     }
 
-    bool isTutorial = true;
+    public static bool isTutorial = false;
+    public static bool beforeTutorial = true;
     int tutorialStep = 0;
     DrinkRecipe lastRecipe = null;
     public static void ShowRecipe(DrinkRecipe _recipe)
@@ -43,7 +44,8 @@ public class RecipeHelper : MonoBehaviour {
         {
             if (instance.lastRecipe == null)
             {
-                
+                beforeTutorial = false;
+                isTutorial = true; 
                 instance.tutorialStep = 0;
                 instance.lastRecipe = _recipe;
                 instance.NextHelp();
@@ -61,22 +63,42 @@ public class RecipeHelper : MonoBehaviour {
                 instance.recipe.text = r;
                
                 AudioBend.Pause();
-
                 instance.lastRecipe = _recipe;
             }
         }
         
     }
-
+    [SerializeField] MiniRecipe minirecipe;
+    [SerializeField] MiniRecipe minirecipe2;
     public void HideRecipe()
     {
         if (isTutorial)
         {
-            Playlist.instance.NextSong();
+            //Playlist.instance.NextSong();
             isTutorial = false;
 
         }
+        if (lastRecipe != null)
+        {
+            MiniRecipe templateMR;
+            MiniRecipe instanceMR; 
+            if (MiniRecipe.minirecipes < 11)
+            {
+                templateMR = this.minirecipe;
+            }
+            else
+            {
+                templateMR = this.minirecipe2;
+            }
+            instanceMR = (MiniRecipe)Instantiate(templateMR);
+        
+            instanceMR.GetComponent<RectTransform>().parent = templateMR.GetComponent<RectTransform>().parent;
+            instanceMR.transform.localPosition = templateMR.transform.localPosition;
+            instanceMR.transform.localPosition = instanceMR.transform.localPosition + new Vector3(0, -5 * (MiniRecipe.minirecipes%12), 0);
+            instanceMR.Show(lastRecipe);
+        }
         AudioBend.Play();
+        EventSystem.current.SetSelectedGameObject(null, new BaseEventData(EventSystem.current));
     }
 
     public void NextHelp()
