@@ -16,7 +16,7 @@ TagManager:
   - Particle
   - Wall
   - Glass
-  - 
+  - Particle_contained
   - Glass Trigger
   - Top layer
   - 

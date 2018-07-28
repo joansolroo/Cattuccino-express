@@ -9,7 +9,7 @@ public class PostRenderer : MonoBehaviour
     [SerializeField] float offsetPosY;
 
     [SerializeField] float offsetNoise;
-    [SerializeField] float offsetColor;
+    [SerializeField] float offsetColorScale;
     void Awake()
     {
 
@@ -29,9 +29,9 @@ public class PostRenderer : MonoBehaviour
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         // TV noise
-        _material.SetFloat("_OffsetNoiseX", Random.Range(0f, 0.6f));
+        _material.SetFloat("_OffsetNoiseX", offsetNoise*Random.Range(0f, 0.6f));
         
-        _material.SetFloat("_OffsetNoiseY", offsetNoise + Random.Range(-0.03f, 0.03f));
+        _material.SetFloat("_OffsetNoiseY", offsetNoise* Random.Range(-0.03f, 0.03f));
         /*
         // Vertical shift
        
@@ -49,7 +49,7 @@ public class PostRenderer : MonoBehaviour
         }
         */
         // Channel color shift
-        offset = Mathf.MoveTowards(offset, Random.Range(0.0005f, 0.002f), 0.0001f);
+        offset = Mathf.MoveTowards(offset, Random.Range(0.0005f, 0.002f)* offsetColorScale, 0.0001f* offsetColorScale);
         _material.SetFloat("_OffsetColor", offset);
         /*
         if (offsetColor > 0.003f)
@@ -60,17 +60,19 @@ public class PostRenderer : MonoBehaviour
         {
             _material.SetFloat("_OffsetColor", Random.Range(0.003f, 0.1f));
         }
-
+        */
+        
+        /*
         // Distortion
         if (Random.Range(0, 15) == 1)
         {
-            _material.SetFloat("_OffsetDistortion", Random.Range(1f, 480f));
+            _material.SetFloat("_OffsetDistortion", Random.Range(480f, 2000));
         }
         else
         {
-            _material.SetFloat("_OffsetDistortion", 480f);
-        }*/
-
+            _material.SetFloat("_OffsetDistortion", 2000);
+        }
+        */
         Graphics.Blit(source, destination, _material);
     }
 }
